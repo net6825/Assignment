@@ -83,7 +83,7 @@ public class BoardServiceImpl implements BoardService {
     public List<BoardDTO> search(String title) {
         List<Board> boardList = boardRepository.findByTitleContains(title);
         List<BoardDTO> boardDTOs = new ArrayList<>();
-        //boardList.stream().map(board -> board.toBoardDTO()).forEach(boardDTOs::add);
+        boardList.stream().map(board -> board.toBoardDTO()).forEach(boardDTOs::add);
         return boardDTOs;
     }
 

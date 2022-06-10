@@ -62,7 +62,6 @@ public class BoardApiController {
 
     @GetMapping("/dashboard/title")
     public List<BoardDTO> searchBoard(@RequestParam("title") String title) {
-        System.out.println("title " + title + title.getClass());
         List<BoardDTO> boardDTOs = boardService.search(title);
         return boardDTOs;
     }
