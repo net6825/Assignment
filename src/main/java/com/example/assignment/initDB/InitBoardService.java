@@ -42,6 +42,15 @@ public class InitBoardService {
         Board board18 = createBoard("제목자차", "password18", "content18", LocalDateTime.now(), 2);
         Board board19 = createBoard("제목카타", "password19", "content19", LocalDateTime.now(), 1);
         Board board20 = createBoard("제목파하", "password20", "content20", dateTime, 0);
+        Board board21 = createBoard("AA", "password20", "content20", dateTime, 0);
+        Board board22 = createBoard("AA", "password20", "content20", dateTime, 0);
+        Board board23 = createBoard("BB", "password20", "content20", dateTime, 0);
+        Board board24 = createBoard("BB", "password20", "content20", dateTime, 0);
+        Board board25 = createBoard("BB", "password20", "content20", dateTime, 0);
+        Board board26 = createBoard("CC", "password20", "content20", dateTime, 0);
+        Board board27 = createBoard("CC", "password20", "content20", dateTime, 0);
+        Board board28 = createBoard("CC", "password20", "content20", dateTime, 0);
+        Board board29 = createBoard("CC", "password20", "content20", dateTime, 0);
 
     }
 

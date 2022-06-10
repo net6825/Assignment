@@ -14,7 +14,7 @@ public interface BoardService {
     BoardDTO findDetail(Long id);
     BoardDTO updateBoard(UpdateBoardDTO boardDTO);
     BoardDTO save(BoardFormDTO boardFormDTO);
-    String remove(RemoveBoardDTO removeBoardDTO);
+    String remove(Long id);
     List<BoardDTO> search(String title);
     List<BoardDTO> searchCount();
 

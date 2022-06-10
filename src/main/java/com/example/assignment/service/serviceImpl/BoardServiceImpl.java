@@ -69,21 +69,21 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public String remove(RemoveBoardDTO removeBoardDTO) {
-
-        Long boardId = removeBoardDTO.getId();
-        Board board = boardRepository.findById(boardId).orElse(null);
-        if(board!=null && board.getPassword().equals(removeBoardDTO.getPassword())){
-            boardRepository.deleteById(boardId);
+    public String remove(Long id) {
+        Board board = boardRepository.findById(id).orElse(null);
+        if(board!=null){
+            boardRepository.deleteById(id);
+            return "삭제됨";
+        }else{
+            return "삭제 안됨";
         }
-        return "삭제됨";
     }
 
     @Override
     public List<BoardDTO> search(String title) {
         List<Board> boardList = boardRepository.findByTitleContains(title);
         List<BoardDTO> boardDTOs = new ArrayList<>();
-        boardList.stream().map(board -> board.toBoardDTO()).forEach(boardDTOs::add);
+        //boardList.stream().map(board -> board.toBoardDTO()).forEach(boardDTOs::add);
         return boardDTOs;
     }
 
