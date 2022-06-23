@@ -1,5 +1,6 @@
 package com.example.assignment.domain.dto;
 
+import com.example.assignment.domain.Member;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,4 +18,5 @@ public class BoardDTO {
     private String content;
     private LocalDateTime createdAt;
     private int count;
+    private Member member;
 }

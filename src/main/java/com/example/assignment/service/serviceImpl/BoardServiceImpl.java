@@ -1,21 +1,22 @@
 package com.example.assignment.service.serviceImpl;
 
 import com.example.assignment.domain.Board;
+import com.example.assignment.domain.Member;
 import com.example.assignment.domain.dto.BoardDTO;
 import com.example.assignment.domain.dto.BoardFormDTO;
-import com.example.assignment.domain.dto.RemoveBoardDTO;
 import com.example.assignment.domain.dto.UpdateBoardDTO;
 import com.example.assignment.repository.BoardRepository;
+import com.example.assignment.repository.MemberRepository;
 import com.example.assignment.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +24,7 @@ import java.util.Optional;
 public class BoardServiceImpl implements BoardService {
 
     private final BoardRepository boardRepository;
+    private final MemberRepository memberRepository;
 
     @Override
     public List<BoardDTO> findAll() {
@@ -55,13 +57,17 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public BoardDTO save(BoardFormDTO boardFormDTO) {
+    public BoardDTO save(BoardFormDTO boardFormDTO, Principal principal) {
+
+        Member member = memberRepository.findById(principal.getName()).get();
+
         Board board = Board.builder()
                 .title(boardFormDTO.getTitle())
                 .password(boardFormDTO.getPassword())
                 .content(boardFormDTO.getContent())
                 .createdAt(LocalDateTime.now())
                 .count(0)
+                .member(member)
                 .build();
         Board saveBoard = boardRepository.save(board);
         BoardDTO boardDTO = saveBoard.toBoardDTO();

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<head>
+    <meta charset="UTF-8">
+    <title>login</title>
+</head>
+<body>
+<form>
+    아이디<input type="text" id="username" name="username">
+    비밀번호<input type="password" id="password" name="password">
+    <button id="send" type="button" value="login">로그인</button>
+</form>
+</div>
+</body>
+</html>
+<script th:inline="javascript">
+    const userId = $('#username').val()
+    const password = $('#password').val()
+
+    const data = JSON.stringify({
+        'userId': userId,
+        'pw': password,
+        'role': "MEMBER"
+    })
+    $(function () {
+
+        $('#send').click((e) => {
+
+            $.ajax({
+                url: "/api/login",
+                type: "POST",
+                contentType: 'application/json',
+                data: data
+            }).done((res) => {
+                window.location.href = "/list"
+            })
+
+        })
+    })
+</script>

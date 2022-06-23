@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<table>
+    <tr>
+        <td>번호</td>
+        <td>제목</td>
+        <td>내용</td>
+        <td>작성자</td>
+    </tr>
+    <tr th:each="a:${list}">
+        <td th:text="a.id"></td>
+        <td th:text="a.title"></td>
+        <td th:text="a.content"></td>
+        <td th:text="a.member"></td>
+    </tr>
+</table>
+</body>
+</html>
