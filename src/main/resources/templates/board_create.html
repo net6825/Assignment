@@ -1,10 +1,47 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
-
+제목 <input type="text" id="title"/> <br>
+내용<input type="text" id="content"/>
+내용<input type="text" id="password"/>
+<button id="submit">등록</button>
 </body>
 </html>
+<script th:inline="javascript">
+    $(function () {
+        $('#submit').click(function () {
+            const csrfToken = /*[[${_csrf.token}]]*/ null;
+            const csrfHeader = /*[[${_csrf.headerName}]]*/ null;
+            const title = $('#title').val()
+            const content = $('#content').val()
+            const password = $('#password').val()
+
+            var data = {
+                'title': title,
+                'content': content,
+                'password': password
+            }
+            $.ajax({
+                url: "/api/list/post",
+                type: 'post',
+                data: JSON.stringify(data),
+                contentType: 'application/json',
+                dataType: 'json',
+                traditional: true,
+                beforeSend(xhr) {
+                    xhr.setRequestHeader(csrfHeader, csrfToken);
+                },
+            }).done((res) => {
+                console.log(res)
+                window.location.href="/list"
+            });
+        })
+    })
+</script>

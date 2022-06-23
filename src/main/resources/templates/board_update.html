@@ -8,6 +8,40 @@
     <title>Title</title>
 </head>
 <body>
-
+글번호 <h2 th:text="${detail.id}" id="bid"></h2>
+제목 <input type="text" th:value="${detail.title}" id="title"/>
+내용 <input type="text" th:value="${detail.content}" id="content"/>
+생성일 <input type="text" th:value="${detail.createdAt}" disabled id="createdAt"/>
+조회수 <input type="text" th:value="${detail.count}" disabled id="count"/>
+<button id="submit">수정</button>
 </body>
 </html>
+<script th:inline="javascript">
+    $(function () {
+        $('#submit').click(function () {
+            const csrfToken = /*[[${_csrf.token}]]*/ null;
+            const csrfHeader = /*[[${_csrf.headerName}]]*/ null;
+            console.log(typeof parseInt($('#bid').text()))
+            const data = {
+                'id': parseInt($('#bid').text()),
+                'title': $('#title').val(),
+                'content': $('#content').val()
+            }
+
+            $.ajax({
+                url: "/api/list/patch",
+                type: 'patch',
+                data: JSON.stringify(data),
+                contentType: 'application/json',
+                dataType: 'json',
+                traditional: true,
+                beforeSend(xhr) {
+                    xhr.setRequestHeader(csrfHeader, csrfToken);
+                },
+            }).done((res) => {
+                console.log(res)
+                window.location.href="/list"
+            });
+        })
+    })
+</script>

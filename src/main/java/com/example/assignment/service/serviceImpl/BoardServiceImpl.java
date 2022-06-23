@@ -47,19 +47,16 @@ public class BoardServiceImpl implements BoardService {
         Long boardId = boardDTO.getId();
         Board board = boardRepository.findById(boardId).orElse(null);
 
-        if(board.getPassword().equals(boardDTO.getPassword())){
             board.updateContent(boardDTO);
             BoardDTO toBoardDTO = board.toBoardDTO();
             return toBoardDTO;
-        }else{
-            return null;
-        }
     }
 
     @Override
     public BoardDTO save(BoardFormDTO boardFormDTO, Principal principal) {
 
         Member member = memberRepository.findById(principal.getName()).get();
+        System.out.println("member = " + member.getId());
 
         Board board = Board.builder()
                 .title(boardFormDTO.getTitle())

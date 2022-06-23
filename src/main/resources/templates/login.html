@@ -7,36 +7,36 @@
     <title>login</title>
 </head>
 <body>
-<form>
+<form th:action="@{/login}" method="post">
     아이디<input type="text" id="username" name="username">
     비밀번호<input type="password" id="password" name="password">
-    <button id="send" type="button" value="login">로그인</button>
+    <button id="send" type="submit" value="login">로그인</button>
 </form>
 </div>
 </body>
 </html>
 <script th:inline="javascript">
-    const userId = $('#username').val()
-    const password = $('#password').val()
-
-    const data = JSON.stringify({
-        'userId': userId,
-        'pw': password,
-        'role': "MEMBER"
-    })
-    $(function () {
-
-        $('#send').click((e) => {
-
-            $.ajax({
-                url: "/api/login",
-                type: "POST",
-                contentType: 'application/json',
-                data: data
-            }).done((res) => {
-                window.location.href = "/list"
-            })
-
-        })
-    })
+    // const userId = $('#username').val()
+    // const password = $('#password').val()
+    //
+    // const data = JSON.stringify({
+    //     'userId': userId,
+    //     'pw': password,
+    //     'role': "MEMBER"
+    // })
+    // $(function () {
+    //
+    //     $('#send').click((e) => {
+    //
+    //         $.ajax({
+    //             url: "/api/login",
+    //             type: "POST",
+    //             contentType: 'application/json',
+    //             data: data
+    //         }).done((res) => {
+    //             window.location.href = "/list"
+    //         })
+    //
+    //     })
+    // })
 </script>

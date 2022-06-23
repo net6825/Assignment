@@ -8,6 +8,41 @@
     <title>Title</title>
 </head>
 <body>
-
+    글번호  <h6 th:text="${detail.id}" id="id"></h6>
+    제목  <h6 th:text="${detail.title}"></h6>
+    내용  <h6 th:text="${detail.content}"></h6>
+    생성일  <h6 th:text="${detail.createdAt}"></h6>
+    조회수  <h6 th:text="${detail.count}"></h6>
+<!--    회원  <h6 th:text="${detail.member.id}"></h6>-->
+<button id="delete">삭제</button>
+<button id="update">수정</button>
 </body>
 </html>
+<script th:inline="javascript">
+    const id = $('#id').text()
+    $(function (){
+        $('#update').click(function(){
+            window.location.href=`/list/update/${id}`
+        })
+
+        $('#delete').click(function(){
+            const csrfToken = /*[[${_csrf.token}]]*/ null;
+            const csrfHeader = /*[[${_csrf.headerName}]]*/ null;
+            $.ajax({
+                url: "/api/list/delete",
+                type: 'delete',
+                data: id,
+                contentType: 'application/json',
+                dataType: 'json',
+                traditional: true,
+                beforeSend(xhr) {
+                    xhr.setRequestHeader(csrfHeader, csrfToken);
+                },
+            }).done((res) => {
+                console.log(res)
+                window.location.href="/list"
+                alert('aa')
+            });
+        })
+    })
+</script>

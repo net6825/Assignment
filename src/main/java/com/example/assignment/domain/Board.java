@@ -22,7 +22,7 @@ public class Board {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(nullable = false)
+    @Column
     private String password;
 
     @Column(nullable = false)
@@ -38,8 +38,8 @@ public class Board {
     @Column(nullable = false)
     private int count;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userId")
+    @ManyToOne
+    @JoinColumn(name = "memberId")
     private Member member;
 
     public void updateCount(){

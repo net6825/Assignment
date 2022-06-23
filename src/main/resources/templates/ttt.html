@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <script
+            src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+            crossorigin="anonymous"
+    ></script>
+    <!-- CSS only -->
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+            crossorigin="anonymous"
+    />
+    <title>상품 목록</title>
+</head>
+
+<body>
+<header>
+    <h1>상품 목록</h1>
+    <br/>
+    <div style="width: 30%; margin-left: 35%" class="btn-group" role="group"
+         aria-label="Basic radio toggle button group">
+        <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked/>
+        <label class="btn btn-outline-primary" for="btnradio1" onclick="showAll()">전체</label>
+
+        <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off"/>
+        <label class="btn btn-outline-primary" for="btnradio2" onclick="showBar()">바</label>
+
+        <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off"/>
+        <label class="btn btn-outline-primary" for="btnradio3" onclick="showCone()">콘</label>
+
+        <input type="radio" class="btn-check" name="btnradio" id="btnradio4" autocomplete="off"/>
+        <label class="btn btn-outline-primary" for="btnradio4" onclick="showTong()">통</label>
+    </div>
+</header>
+<br/>
+
+<hr/>
+
+<table
+        class="table table-borderless"
+        style="width: 50%; margin-left: 25%; text-align: center"
+>
+    <thead class="table-primary">
+    <tr>
+        <th>사진</th>
+        <th>상품명</th>
+        <th>가격</th>
+        <th></th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody th:each="m:${menus}" th:class="i+${m.cat.catId}">
+    <tr>
+        <td>
+            <img th:src="@{${m.mPhoto}}" width="150" height="150"/>
+        </td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>
+            <button></button>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<hr/>
+<h3>장바구니</h3>
+<div id="result"></div>
+<button id="pay" class="btn btn-success">결제</button>
+</body>
+
+<script th:inline="javascript">
+    let item = [];
+    let total = 0;
+    let count = 0;
+    var div = document.getElementById('result');
+
+    $(function () {
+        $('.btn-primary').click(function () {
+            const mName = $(this).closest('tr').children().eq(1).text();
+            const price = Number(
+                $(this).closest('tr').children().eq(2).text().replace(',', '')
+            );
+
+            console.log($(this).closest('tr').children().eq(2).text());
+
+            const stock = Number(
+                $(this).closest('tr').children().eq(3).text(),
+            );
+
+            let result;
+            if (stock < 0) {
+                return alert('안됨');
+            }
+
+            if (isExistMenu(mName)) {
+                // 기존에 있는 데이터일때
+                item = item.map((menu) => {
+                    if (menu.name === mName) {
+                        if (menu.count < stock) {
+                            menu.price += price;
+                            menu.count += 1;
+                            total += price;
+                        }
+                    }
+                    return menu;
+                });
+            } else {
+                // 기존에 없는 데이터일때
+                item.push({
+                    name: mName,
+                    price: price,
+                    count: count + 1,
+                    total: (total += price),
+                });
+            }
+
+            console.log(item);
+            result = item.map((menu) => {
+                return `${menu.name} : 가격 ${menu.price} :::: ${menu.count}개<br>`;
+            });
+
+            div.innerHTML = result + `총 금액 ${total}`;
+            // .replace(/,/gi, "")
+        });
+    });
+
+    function isExistMenu(mName) {
+        const result = item.filter((menu) => {
+            if (menu.name === mName) return true;
+            else return false;
+        });
+        return result.length > 0;
+    }
+
+    $(function () {
+        let temp = [];
+        $('#pay').click(function () {
+            if (item.length == 0) alert('장바구니에 물건을 담아주세요');
+            console.log(item);
+            const csrfToken = /*[[${_csrf.token}]]*/ null;
+            const csrfHeader = /*[[${_csrf.headerName}]]*/ null;
+
+            $.ajax({
+                url: 'api/pay',
+                type: 'post',
+                data: JSON.stringify(item),
+                contentType: 'application/json',
+                dataType: 'json',
+                traditional: true,
+                beforeSend(xhr) {
+                    xhr.setRequestHeader(csrfHeader, csrfToken);
+                },
+            }).done((res) => {
+                alert('결제 완료');
+                item.splice(0, item.length);
+                div.innerHTML = '';
+                location.reload();
+            });
+        });
+    });
+
+    function showBar() {
+        $('.i1').show();
+        $('.i2').hide();
+        $('.i3').hide();
+    }
+
+    function showCone() {
+        $('.i1').hide();
+        $('.i2').show();
+        $('.i3').hide();
+    }
+
+    function showTong() {
+        $('.i1').hide();
+        $('.i2').hide();
+        $('.i3').show();
+    }
+
+    function showAll() {
+        $('.i1').show();
+        $('.i2').show();
+        $('.i3').show();
+    }
+</script>
+</html>

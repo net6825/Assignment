@@ -13,14 +13,26 @@
         <td>번호</td>
         <td>제목</td>
         <td>내용</td>
-        <td>작성자</td>
     </tr>
     <tr th:each="a:${list}">
-        <td th:text="a.id"></td>
-        <td th:text="a.title"></td>
-        <td th:text="a.content"></td>
-        <td th:text="a.member"></td>
+        <td th:text="${a.id}" ></td>
+        <td th:text="${a.title}"></td>
+        <td th:text="${a.content}" class="item"></td>
     </tr>
 </table>
+<button id="reg" type="button">글 작성</button>
 </body>
 </html>
+<script th:inline="javascript">
+    $(function (){
+        $('.item').click(function(){
+            const id = $(this).closest('tr').children().eq(0).text();
+            window.location.href=`/list/${id}`
+        })
+
+        $('#reg').click(function (){
+            window.location.href="/list/create"
+            console.log("AAA")
+        })
+    })
+</script>

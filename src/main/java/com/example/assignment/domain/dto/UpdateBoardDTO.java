@@ -10,6 +10,5 @@ import lombok.Setter;
 public class UpdateBoardDTO {
     private Long id;
     private String title;
-    private String password;
     private String content;
 }

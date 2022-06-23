@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -25,9 +27,16 @@ public class BoardWebController {
         return "denied";
     }
 
-    @GetMapping("/list/detail")
-    public String detail(Model model){
+    @GetMapping("/list/{id}")
+    public String detail(Model model, @PathVariable("id")Long id){
+        BoardDTO detail = boardService.findDetail(id);
+        model.addAttribute("detail", detail);
         return "board_detail";
+    }
+
+    @GetMapping("/list/create")
+    public String create(){
+        return "board_create";
     }
 
     @GetMapping("/list")
@@ -37,8 +46,10 @@ public class BoardWebController {
         return "board_list";
     }
 
-    @GetMapping("/list_update")
-    public String update(Model model){
+    @GetMapping("/list/update/{id}")
+    public String update(Model model, @PathVariable("id") Long id) {
+        BoardDTO detail = boardService.findDetail(id);
+        model.addAttribute("detail", detail);
         return "board_update";
     }
 }
